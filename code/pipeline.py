@@ -33,7 +33,9 @@ def check_dataset(dataset_filename):
     df = pd.read_csv(dataset_filename, index_col=0)
     for c in MANDATORY_COLUMNS:
         assert c in df.columns, f"Column {c} is mandatory."
-        assert isinstance(df[c].dtype, type(np.dtype("float64"))) or isinstance(df[c].dtype, type(np.dtype("int")))
+        assert isinstance(df[c].dtype, type(np.dtype("float64"))) or isinstance(df[c].dtype, type(np.dtype("int"))), (
+            f"Column {c} is not Float or Int: {df[c].dtype}"
+        )
 
 
 def run_full_pipeline(base_path, service_account_file):

@@ -45,9 +45,7 @@ OUTLIER_CORRECTION = {
 # WHERE itemid IN (223758, 229784, 228687) and value <> "Full code"
 
 
-def _download_data(
-    base_path="../data", service_account_file="key.json", overwrite=False
-):
+def _download_data(base_path="../data", service_account_file="key.json", overwrite=False):
     """
     Downloads and saves required MIMIC-IV datasets as CSV files from Google BigQuery.
     This function checks for the existence of specific CSV files in the given base_path.
@@ -94,10 +92,7 @@ def _download_data(
         )
         df.to_csv(os.path.join(base_path, "mimic_iv.csv"))
 
-    if (
-        not os.path.exists(os.path.join(base_path, "charlson_comorbidity.csv"))
-        or overwrite
-    ):
+    if not os.path.exists(os.path.join(base_path, "charlson_comorbidity.csv")) or overwrite:
         query = """SELECT stay_id, charlson_comorbidity_index
             FROM `physionet-data.mimic_derived.charlson` c
             INNER JOIN `physionet-data.mimic_icu.icustays` stays
@@ -249,7 +244,7 @@ def _load_data(base_path):
         .to_dict()
     )
     data.loc[:, "admission_type"] = data["stay_id"].map(admission_type)
-    data = pd.get_dummies(data, columns=["admission_type"])
+    data = pd.get_dummies(data, columns=["admission_type"], dtype="int")
 
     comorbidities = (
         pd.read_csv(os.path.join(base_path, "charlson_comorbidity.csv"))
@@ -285,9 +280,7 @@ def apply_nan_rules(df, rules):
 
     fill_with_zeros = [k for k, v in rules.items() if v == "zero"]
     fill_prev_value = [k for k, v in rules.items() if v == "prev_value"]
-    fill_with_value = [
-        (k, v) for k, v in rules.items() if v not in ["zero", "prev_value"]
-    ]
+    fill_with_value = [(k, v) for k, v in rules.items() if v not in ["zero", "prev_value"]]
 
     for c in tqdm.tqdm(fill_with_zeros):
         df.loc[:, c] = df[c].fillna(0)
@@ -341,9 +334,7 @@ def compute_sofa(data):
         "coagulation",
         "renal",
     ]:
-        data.loc[:, "sofa"] += data[sub_sofa].apply(
-            lambda x: x if not np.isnan(x) else 0
-        )
+        data.loc[:, "sofa"] += data[sub_sofa].apply(lambda x: x if not np.isnan(x) else 0)
 
     data.loc[
         (data["respiration"].isna())
@@ -357,9 +348,7 @@ def compute_sofa(data):
     return data
 
 
-def obtain_mimic_dataset(
-    base_path, download_data=True, service_account_file="key.json"
-):
+def obtain_mimic_dataset(base_path, download_data=True, service_account_file="key.json"):
     """
     Obtains and processes the MIMIC-IV dataset.
     This function optionally downloads the MIMIC-IV dataset to the specified base path,
