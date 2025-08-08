@@ -1,5 +1,7 @@
 # PADS: Patient Outcome Assessment and Decision Support
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/alex-pardo/PADS?utm_source=oss&utm_medium=github&utm_campaign=alex-pardo%2FPADS&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 ## Acknowledgement
 
 If you use code or concepts available in this repository, we would be grateful if you would cite the PADS paper: https://doi.org/10.3390/jcm14134515
